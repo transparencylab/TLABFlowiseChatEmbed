@@ -91,7 +91,7 @@ export const setLocalStorageChatflow = (chatflowid: string, chatId: string, save
   }
 };
 
-export const getLocalStorageChatflow = (chatflowid: string,chatId: string) => {
+export const getLocalStorageChatflow = (chatflowid: string, chatId: string) => {
   const chatDetails = localStorage.getItem(`${chatflowid}_${chatId}_EXTERNAL`);
   if (!chatDetails) return {};
   try {
