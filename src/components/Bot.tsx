@@ -464,7 +464,6 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
 
   const updateMetadata = (data: any, input: string) => {
     if (data.chatId) {
-      console.log('updateMetadata', data);
       setChatId(data.chatId);
     }
 
