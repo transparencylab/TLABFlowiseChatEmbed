@@ -464,6 +464,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
 
   const updateMetadata = (data: any, input: string) => {
     if (data.chatId) {
+      console.log("updateMetadata",data);
       setChatId(data.chatId);
     }
 
@@ -750,7 +751,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     try {
       removeLocalStorageChatHistory(props.chatflowid, chatId());
       setChatId(
-        (props.chatflowConfig?.vars as any)?.customerId ? `${(props.chatflowConfig?.vars as any).customerId.toString()}+${uuidv4()}` : uuidv4(),
+        (props.chatflowConfig?.vars as any)?.customerId ? `${(props.chatflowConfig?.vars as any).customerId.toString()}` : uuidv4(),
       );
       setUploadedFiles([]);
       const messages: MessageType[] = [
