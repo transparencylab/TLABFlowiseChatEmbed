@@ -15,8 +15,8 @@ export declare const sendRequest: <ResponseData>(params: string | {
     error?: Error | undefined;
 }>;
 export declare const setLocalStorageChatflow: (chatflowid: string, chatId: string, saveObj?: Record<string, any>) => void;
-export declare const getLocalStorageChatflow: (chatflowid: string) => any;
-export declare const removeLocalStorageChatHistory: (chatflowid: string) => void;
+export declare const getLocalStorageChatflow: (chatflowid: string, chatId: string) => any;
+export declare const removeLocalStorageChatHistory: (chatflowid: string, chatId: string) => void;
 export declare const getBubbleButtonSize: (size: 'small' | 'medium' | 'large' | number | undefined) => number;
 export declare const setCookie: (cname: string, cvalue: string, exdays: number) => void;
 export declare const getCookie: (cname: string) => string;
