@@ -259,8 +259,9 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   );
 
   const [isChatFlowAvailableToStream, setIsChatFlowAvailableToStream] = createSignal(false);
+  // Modify by Kevin YANG, use customer id as chat id.
   const [chatId, setChatId] = createSignal(
-    (props.chatflowConfig?.vars as any)?.customerId ? `${(props.chatflowConfig?.vars as any).customerId.toString()}+${uuidv4()}` : uuidv4(),
+    (props.chatflowConfig?.vars as any)?.customerId ? `${(props.chatflowConfig?.vars as any).customerId.toString()}` : uuidv4(),
   );
   const [isMessageStopping, setIsMessageStopping] = createSignal(false);
   const [starterPrompts, setStarterPrompts] = createSignal<string[]>([], { equals: false });
@@ -793,9 +794,11 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
 
   const clearChat = () => {
     try {
-      removeLocalStorageChatHistory(props.chatflowid);
+      // Modify by Kevin YANG, add chatId parameter.
+      removeLocalStorageChatHistory(props.chatflowid, chatId());
+      // Modify by Kevin YANG, use customer id as chat id.
       setChatId(
-        (props.chatflowConfig?.vars as any)?.customerId ? `${(props.chatflowConfig?.vars as any).customerId.toString()}+${uuidv4()}` : uuidv4(),
+        (props.chatflowConfig?.vars as any)?.customerId ? `${(props.chatflowConfig?.vars as any).customerId.toString()}` : uuidv4(),
       );
       setUploadedFiles([]);
       const messages: MessageType[] = [
@@ -804,7 +807,8 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
           type: 'apiMessage',
         },
       ];
-      if (leadsConfig()?.status && !getLocalStorageChatflow(props.chatflowid)?.lead) {
+      // Modify by Kevin YANG, add chatId parameter.
+      if (leadsConfig()?.status && !getLocalStorageChatflow(props.chatflowid, chatId())?.lead) {
         messages.push({ message: '', type: 'leadCaptureMessage' });
       }
       setMessages(messages);
@@ -813,6 +817,11 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
       console.error(`error: ${errorData}`);
     }
   };
+
+  // Modify by Kevin YANG, add clearChat method to window object.
+  if(typeof window !== 'undefined') {
+    (window as any).flowiseClearChat = clearChat;
+  }
 
   onMount(() => {
     if (props.clearChatOnReload) {
@@ -859,7 +868,8 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
       setDisclaimerPopupOpen(false);
     }
 
-    const chatMessage = getLocalStorageChatflow(props.chatflowid);
+    // Modify by Kevin YANG, add chatId parameter.
+    const chatMessage = getLocalStorageChatflow(props.chatflowid, chatId());
     if (chatMessage && Object.keys(chatMessage).length) {
       if (chatMessage.chatId) setChatId(chatMessage.chatId);
       const savedLead = chatMessage.lead;
@@ -928,7 +938,8 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
       }
       if (chatbotConfig.leads) {
         setLeadsConfig(chatbotConfig.leads);
-        if (chatbotConfig.leads?.status && !getLocalStorageChatflow(props.chatflowid)?.lead) {
+        // Modify by Kevin YANG, add chatId parameter.
+        if (chatbotConfig.leads?.status && !getLocalStorageChatflow(props.chatflowid, chatId())?.lead) {
           setMessages((prevMessages) => [...prevMessages, { message: '', type: 'leadCaptureMessage' }]);
         }
       }
@@ -1363,7 +1374,8 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
                         dateTimeToggle={props.dateTimeToggle}
                       />
                     )}
-                    {message.type === 'leadCaptureMessage' && leadsConfig()?.status && !getLocalStorageChatflow(props.chatflowid)?.lead && (
+                    {/* Modify by Kevin YANG, add chatId parameter. */}
+                    {message.type === 'leadCaptureMessage' && leadsConfig()?.status && !getLocalStorageChatflow(props.chatflowid, chatId())?.lead && (
                       <LeadCaptureBubble
                         message={message}
                         chatflowid={props.chatflowid}

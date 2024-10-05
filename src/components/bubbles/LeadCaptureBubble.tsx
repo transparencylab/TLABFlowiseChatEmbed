@@ -96,7 +96,8 @@ export const LeadCaptureBubble = (props: Props) => {
           'font-size': props.fontSize ? `${props.fontSize}px` : `${defaultFontSize}px`,
         }}
       >
-        {props.isLeadSaved || getLocalStorageChatflow(props.chatflowid)?.lead ? (
+        {/* Modify by Kevin YANG, add chatId parameter. */}
+        {props.isLeadSaved || getLocalStorageChatflow(props.chatflowid, props.chatId)?.lead ? (
           <div class="flex flex-col gap-2">
             <span style={{ 'white-space': 'pre-line' }}>
               {props.leadsConfig?.successMessage || 'Thank you for submitting your contact information.'}
