@@ -1,6 +1,6 @@
 {
-  "name": "flowise-embed",
-  "version": "2.0.2",
+  "name": "@transparencylab/tlab-flowise-embed",
+  "version": "102.0.6",
   "description": "Javascript library to display flowise chatbot on your website",
   "type": "module",
   "main": "dist/index.js",
